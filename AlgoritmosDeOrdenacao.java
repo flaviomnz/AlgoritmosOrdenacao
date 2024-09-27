@@ -156,4 +156,103 @@ public class AlgoritmosDeOrdenacao {
             k++;
         }
     }
+    // Algoritmo Quick Sort
+    public static void rapido(int[] array, int baixo, int alto) {
+        if (baixo < alto) {
+            int pi = particao(array, baixo, alto);
+            rapido(array, baixo, pi - 1);
+            rapido(array, pi + 1, alto);
+        }
+    }
+
+    public static int particao(int[] array, int baixo, int alto) {
+        int pivo = array[alto];
+        int i = (baixo - 1);
+        for (int j = baixo; j < alto; j++) {
+            if (array[j] <= pivo) {
+                i++;
+                int temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+        int temp = array[i + 1];
+        array[i + 1] = array[alto];
+        array[alto] = temp;
+
+        return i + 1;
+    }
+
+    // Algoritmo Heap Sort
+    public static void heap(int[] array) {
+        int n = array.length;
+
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapificar(array, n, i);
+
+        for (int i = n - 1; i > 0; i--) {
+            int temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            heapificar(array, i, 0);
+        }
+    }
+
+    public static void heapificar(int[] array, int n, int i) {
+        int maior = i;
+        int esquerda = 2 * i + 1;
+        int direita = 2 * i + 2;
+
+        if (esquerda < n && array[esquerda] > array[maior])
+            maior = esquerda;
+
+        if (direita < n && array[direita] > array[maior])
+            maior = direita;
+
+        if (maior != i) {
+            int temp = array[i];
+            array[i] = array[maior];
+            array[maior] = temp;
+            heapificar(array, n, maior);
+        }
+    }
+
+    // Método principal
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Solicitar o nome do arquivo de entrada
+            System.out.print("Digite o nome do arquivo de entrada: ");
+            String nomeArquivoEntrada = scanner.nextLine();
+
+            // Gerar o nome do arquivo de saída automaticamente
+            String nomeArquivoSaida = "output_" + nomeArquivoEntrada;
+            System.out.println("O arquivo de saída será: " + nomeArquivoSaida);
+
+            // Mostrar as opções de algoritmos
+            System.out.println("Escolha o algoritmo:");
+            System.out.println("1 - Bubble Sort");
+            System.out.println("2 - Insertion Sort");
+            System.out.println("3 - Selection Sort");
+            System.out.println("4 - Merge Sort");
+            System.out.println("5 - Quick Sort");
+            System.out.println("6 - Heap Sort");
+
+            // Ler a escolha do usuário
+            System.out.print("Digite o número correspondente ao algoritmo escolhido: ");
+            int escolhaAlgoritmo = scanner.nextInt();
+
+            // Ler o arquivo de entrada
+            int[] numeros = lerDoArquivo(nomeArquivoEntrada);
+
+            // Ordenar os números e medir o tempo de execução
+            medirEOrdenar(numeros, escolhaAlgoritmo, nomeArquivoSaida);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao processar o arquivo: " + e.getMessage());
+        }
+
+        scanner.close();
+    }
 }
